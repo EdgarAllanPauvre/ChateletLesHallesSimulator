@@ -124,6 +124,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""id"": ""6a367dcd-70ec-4700-b125-3382450ead6c"",
                     ""expectedControlType"": """",
                     ""processors"": """",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LookAtPhone"",
+                    ""type"": ""Button"",
+                    ""id"": ""5da0e39b-644d-43ce-b4d1-5b53264e5f75"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Punch"",
+                    ""type"": ""Button"",
+                    ""id"": ""0f777f22-8f0d-4d36-8614-f3a2a05ee45d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 }
@@ -280,6 +298,50 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""Slomo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ba49b9d6-956b-420e-87ee-d20914aca98e"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""LookAtPhone"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1119e44d-e689-4214-a160-dc705a8afa7b"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""LookAtPhone"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6f0b1356-bc60-4a15-841f-abf5493a7ce9"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Punch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2a660c9d-7d95-4564-97c1-2df082bce064"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Punch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -871,6 +933,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Strafe = m_Player.FindAction("Strafe", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Slomo = m_Player.FindAction("Slomo", throwIfNotFound: true);
+        m_Player_LookAtPhone = m_Player.FindAction("LookAtPhone", throwIfNotFound: true);
+        m_Player_Punch = m_Player.FindAction("Punch", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -968,6 +1032,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Strafe;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Slomo;
+    private readonly InputAction m_Player_LookAtPhone;
+    private readonly InputAction m_Player_Punch;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -995,6 +1061,14 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Slomo".
         /// </summary>
         public InputAction @Slomo => m_Wrapper.m_Player_Slomo;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/LookAtPhone".
+        /// </summary>
+        public InputAction @LookAtPhone => m_Wrapper.m_Player_LookAtPhone;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Punch".
+        /// </summary>
+        public InputAction @Punch => m_Wrapper.m_Player_Punch;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1033,6 +1107,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Slomo.started += instance.OnSlomo;
             @Slomo.performed += instance.OnSlomo;
             @Slomo.canceled += instance.OnSlomo;
+            @LookAtPhone.started += instance.OnLookAtPhone;
+            @LookAtPhone.performed += instance.OnLookAtPhone;
+            @LookAtPhone.canceled += instance.OnLookAtPhone;
+            @Punch.started += instance.OnPunch;
+            @Punch.performed += instance.OnPunch;
+            @Punch.canceled += instance.OnPunch;
         }
 
         /// <summary>
@@ -1056,6 +1136,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Slomo.started -= instance.OnSlomo;
             @Slomo.performed -= instance.OnSlomo;
             @Slomo.canceled -= instance.OnSlomo;
+            @LookAtPhone.started -= instance.OnLookAtPhone;
+            @LookAtPhone.performed -= instance.OnLookAtPhone;
+            @LookAtPhone.canceled -= instance.OnLookAtPhone;
+            @Punch.started -= instance.OnPunch;
+            @Punch.performed -= instance.OnPunch;
+            @Punch.canceled -= instance.OnPunch;
         }
 
         /// <summary>
@@ -1384,6 +1470,20 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSlomo(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "LookAtPhone" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLookAtPhone(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Punch" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPunch(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.
