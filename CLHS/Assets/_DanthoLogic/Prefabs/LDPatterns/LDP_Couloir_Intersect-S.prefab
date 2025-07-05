@@ -50,17 +50,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5826662282994338795}
     m_Modifications:
-    - target: {fileID: 124496829864776105, guid: edae03af56b91b249a965d6d8153bec0, type: 3}
-      propertyPath: m_IsActive
-      value: 0
+    - target: {fileID: 1183031482919182224, guid: edae03af56b91b249a965d6d8153bec0, type: 3}
+      propertyPath: m_VersionIndex
+      value: 7516
+      objectReference: {fileID: 0}
+    - target: {fileID: 2395550946498141330, guid: edae03af56b91b249a965d6d8153bec0, type: 3}
+      propertyPath: m_VersionIndex
+      value: 6706
+      objectReference: {fileID: 0}
+    - target: {fileID: 2456812072717611334, guid: edae03af56b91b249a965d6d8153bec0, type: 3}
+      propertyPath: m_VersionIndex
+      value: 6706
       objectReference: {fileID: 0}
     - target: {fileID: 2580795302530400125, guid: edae03af56b91b249a965d6d8153bec0, type: 3}
       propertyPath: m_Name
       value: LightBlockIntersectON
       objectReference: {fileID: 0}
-    - target: {fileID: 3068496260490731054, guid: edae03af56b91b249a965d6d8153bec0, type: 3}
-      propertyPath: m_IsActive
-      value: 0
+    - target: {fileID: 2803264841499547502, guid: edae03af56b91b249a965d6d8153bec0, type: 3}
+      propertyPath: m_VersionIndex
+      value: 6706
+      objectReference: {fileID: 0}
+    - target: {fileID: 4509300621683209293, guid: edae03af56b91b249a965d6d8153bec0, type: 3}
+      propertyPath: m_VersionIndex
+      value: 6706
       objectReference: {fileID: 0}
     - target: {fileID: 6820464990423043492, guid: edae03af56b91b249a965d6d8153bec0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -102,13 +114,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6922852092927165698, guid: edae03af56b91b249a965d6d8153bec0, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8694086827903064387, guid: edae03af56b91b249a965d6d8153bec0, type: 3}
-      propertyPath: m_IsActive
-      value: 0
+    - target: {fileID: 7246239434946968174, guid: edae03af56b91b249a965d6d8153bec0, type: 3}
+      propertyPath: m_VersionIndex
+      value: 7450
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
