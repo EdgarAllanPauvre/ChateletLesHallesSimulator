@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3636483524076316071, guid: 0fce7508707ddd64d8c162965db1378a, type: 3}
       propertyPath: m_Name
-      value: Wall-M Variant
+      value: Wall-M
       objectReference: {fileID: 0}
     - target: {fileID: 4155641878268644451, guid: 0fce7508707ddd64d8c162965db1378a, type: 3}
       propertyPath: m_Size.z

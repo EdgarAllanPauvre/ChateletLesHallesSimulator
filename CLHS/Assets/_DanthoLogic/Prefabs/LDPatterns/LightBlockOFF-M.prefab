@@ -3574,7 +3574,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6263439259874111381, guid: be2c703d1bd23154e8949707442723ac, type: 3}
       propertyPath: m_Name
-      value: LightBlockOFF-M Variant
+      value: LightBlockOFF-M
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
