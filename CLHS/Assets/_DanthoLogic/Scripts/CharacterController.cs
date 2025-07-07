@@ -1,6 +1,7 @@
 using DanthoLogic.UI;
 using DG.Tweening;
 using System;
+//using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,21 +9,6 @@ namespace DanthoLogic
 {
     public class CharacterController : MonoBehaviour
     {
-        [Header("Speeds")]
-        [SerializeField] SpeedParam speed0;
-        [SerializeField] SpeedParam speed1;
-        [SerializeField] SpeedParam speedMax;
-        [Space]
-        [SerializeField] SpeedParam slowmoSpeed;
-        [SerializeField] SpeedParam speedBoost;
-        [Space]
-        [SerializeField] float strafeSpeed;
-        [SerializeField] float strafeSpeedDuringSpeedBoost;
-        [SerializeField] float transiDurationAfterCollisionDuringSpeedBoost;
-        [SerializeField] float rotationDuration;
-
-        [Header("Punch")]
-        [SerializeField] float hitRange;
 
         [Header("Links")]
         [SerializeField] Camera cam;
@@ -36,6 +22,8 @@ namespace DanthoLogic
         [SerializeField] InputActionReference slomoInput;
         [SerializeField] InputActionReference lookAtPhoneInput;
         [SerializeField] InputActionReference punchInput;
+
+        GameSettings.PlayerSettings settings;
 
         bool slomoOn;
 
@@ -53,7 +41,7 @@ namespace DanthoLogic
         private void Start()
         {
             Init();
-            UpdateSpeed(speedMax);
+            UpdateSpeed(settings.speedMax);
         }
 
         private void OnEnable()
@@ -72,12 +60,21 @@ namespace DanthoLogic
             slomoInput.action.performed -= ctx => Slomo();
         }
 
+        private void OnDestroy()
+        {
+            lookAtPhoneInput.action.performed -= ctx => LookAtPhone();
+            speedBoostInput.action.performed -= ctx => SpeedBoost();
+            punchInput.action.performed -= ctx => Punch();
+            slomoInput.action.performed -= ctx => Slomo();
+        }
+
         void Init()
         {
-            currentSpeedParam = speed1;
+            settings = GameManager.Main.settings.PlayerStng;
+            currentSpeedParam = settings.speed1;
             //currentSpeedState = ESpeedState.speed1;
-            currentSpeed = speed1.speed;
-            currentStrafeSpeed = strafeSpeed;
+            currentSpeed = settings.speed1.speed;
+            currentStrafeSpeed = settings.strafeSpeed;
             t = this.transform;
 
             Cursor.visible = false;
@@ -98,7 +95,7 @@ namespace DanthoLogic
         Tween speedTween;
         void UpdateSpeed(SpeedParam newSpeed)
         {
-            currentStrafeSpeed = strafeSpeed;
+            currentStrafeSpeed = settings.strafeSpeed;
 
             float targetValue = newSpeed.speed;
             float duration = newSpeed.transitionDuration;
@@ -112,7 +109,7 @@ namespace DanthoLogic
                 case ESpeedState.speed1:
                     if (collisionDuringBoost)
                     {
-                        duration = transiDurationAfterCollisionDuringSpeedBoost;
+                        duration = settings.transiDurationAfterCollisionDuringSpeedBoost;
                         collisionDuringBoost = false;
                     }
                     break;
@@ -121,7 +118,7 @@ namespace DanthoLogic
                     break;
                 case ESpeedState.speedBoost:
                     if (currentSpeedParam.speedState != ESpeedState.speedMax) return;
-                    currentStrafeSpeed = strafeSpeedDuringSpeedBoost;
+                    currentStrafeSpeed = settings.strafeSpeedDuringSpeedBoost;
                     break;
                 default:
                     break;
@@ -133,9 +130,10 @@ namespace DanthoLogic
                 .OnComplete(() =>
                 {
                     currentSpeedParam = newSpeed;
+                    Debug.Log(currentSpeedParam.speedState.ToString());
                     //currentSpeedState = newSpeed.speedState;
-                    if (currentSpeedParam.speedState == ESpeedState.speed0) UpdateSpeed(speed1);
-                    if (currentSpeedParam.speedState == ESpeedState.speed1) UpdateSpeed(speedMax);
+                    if (currentSpeedParam.speedState == ESpeedState.speed0) UpdateSpeed(settings.speed1);
+                    if (currentSpeedParam.speedState == ESpeedState.speed1) UpdateSpeed(settings.speedMax);
                 });
         }
 
@@ -148,8 +146,8 @@ namespace DanthoLogic
         void Punch()
         {
             animator.SetTrigger("punch");
-            UpdateSpeed(speed1);
-            RaycastHit[] hits = Physics.RaycastAll(t.position, t.forward, hitRange);
+            UpdateSpeed(settings.speed1);
+            RaycastHit[] hits = Physics.RaycastAll(t.position, t.forward, settings.hitRange);
             for (int i = 0; i < hits.Length; i++)
             {
                 if (hits[i].transform.GetComponent<Citizen>() != null)
@@ -163,22 +161,26 @@ namespace DanthoLogic
         void SpeedBoost()
         {
             if (currentSpeedParam.speedState == ESpeedState.speedMax)
-                UpdateSpeed(speedBoost);
+                UpdateSpeed(settings.speedBoost);
         }
 
         void Slomo()
         {
             //if(ctx.performed)
-
+            Debug.Log("slomo performed");
             slomoOn = !slomoOn;
 
             if (slomoOn)
             {
                 speedBeforeSlomo = currentSpeedParam;
-                UpdateSpeed(slowmoSpeed);
+                Debug.Log("old speed " + speedBeforeSlomo.speedState.ToString());
+                UpdateSpeed(settings.slowmoSpeed);
             }
             else
+            {
+                Debug.Log("going into " + speedBeforeSlomo.speedState.ToString());
                 UpdateSpeed(speedBeforeSlomo);
+            }
         }
 
         private void OnTriggerEnter(Collider other)
@@ -186,13 +188,13 @@ namespace DanthoLogic
             if (other.GetComponent<SpeedBreaker>() != null)
             {
                 if (currentSpeedParam.speedState == ESpeedState.speedBoost) collisionDuringBoost = true;
-                UpdateSpeed(speed0);
+                UpdateSpeed(settings.speed0);
             }
 
-            if (other.TryGetComponent<CharacterTurner>(out CharacterTurner ct))
-            {
-                t.DORotate(ct.newForward.eulerAngles, rotationDuration).OnComplete(() => { Debug.Log(t.forward); });
-            }
+            //if (other.TryGetComponent<CharacterTurner>(out CharacterTurner ct))
+            //{
+            //    t.DORotate(ct.newForward.eulerAngles, rotationDuration).OnComplete(() => { Debug.Log(t.forward); });
+            //}
         }
 
         private void OnDrawGizmos()

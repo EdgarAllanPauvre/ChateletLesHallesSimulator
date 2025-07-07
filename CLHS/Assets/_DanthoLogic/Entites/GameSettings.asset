@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35d059333aa01b94bafa9f9f18e7e283, type: 3}
+  m_Name: GameSettings
+  m_EditorClassIdentifier: 
+  playerSettings:
+    speed0:
+      speedState: 1
+      speed: 2
+      transitionDuration: 0.04
+    speed1:
+      speedState: 2
+      speed: 5
+      transitionDuration: 2
+    speedMax:
+      speedState: 3
+      speed: 7
+      transitionDuration: 5
+    slowmoSpeed:
+      speedState: 0
+      speed: 0.5
+      transitionDuration: 0.05
+    speedBoost:
+      speedState: 4
+      speed: 12
+      transitionDuration: 2
+    strafeSpeed: 5
+    strafeSpeedDuringSpeedBoost: 2
+    transiDurationAfterCollisionDuringSpeedBoost: 4
+    rotationDuration: 0.5
+    hitRange: 3
