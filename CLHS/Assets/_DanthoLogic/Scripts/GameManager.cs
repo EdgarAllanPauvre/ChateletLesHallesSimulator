@@ -12,6 +12,8 @@ namespace DanthoLogic
 
         private void Awake()
         {
+            Application.targetFrameRate = 60;
+
             if (_main != null) Destroy(this.gameObject);
             _main = this;
 
