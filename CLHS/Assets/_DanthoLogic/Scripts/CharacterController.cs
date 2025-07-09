@@ -219,14 +219,17 @@ namespace DanthoLogic
             }
         }
 
+        Tween debugRotateTween = null;
         void DEBUGTurnLeft()
         {
-            t.DORotate(t.eulerAngles + new Vector3(0, -90, 0), GameManager.Main.settings.PlayerStng.rotationDuration).SetUpdate(UpdateType.Fixed);
+            if (debugRotateTween != null && debugRotateTween.IsPlaying()) return;
+            debugRotateTween = t.DORotate(t.eulerAngles + new Vector3(0, -90, 0), GameManager.Main.settings.PlayerStng.rotationDuration).SetUpdate(UpdateType.Fixed);
 
         }
         void DEBUGTurnRight()
         {
-            t.DORotate(t.eulerAngles + new Vector3(0, 90, 0), GameManager.Main.settings.PlayerStng.rotationDuration).SetUpdate(UpdateType.Fixed);
+            if (debugRotateTween != null && debugRotateTween.IsPlaying()) return;
+            debugRotateTween = t.DORotate(t.eulerAngles + new Vector3(0, 90, 0), GameManager.Main.settings.PlayerStng.rotationDuration).SetUpdate(UpdateType.Fixed);
         }
 
 #if UNITY_EDITOR
