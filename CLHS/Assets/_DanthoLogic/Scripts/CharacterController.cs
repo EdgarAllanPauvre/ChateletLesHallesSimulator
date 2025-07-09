@@ -45,20 +45,26 @@ namespace DanthoLogic
             GameManager.Main.inputs.Player.Boost.performed += ctx => SpeedBoost();
             GameManager.Main.inputs.Player.Punch.performed += ctx => Punch();
             GameManager.Main.inputs.Player.Slomo.performed += ctx => Slomo();
-#if FINAL_GAME_VERSION
-#else
-            GameManager.Main.inputs.Player.DEBUGTurnLeft.performed += ctx => DEBUGTurnLeft();
-            GameManager.Main.inputs.Player.DEBUGTurnRight.performed += ctx => DEBUGTurnRight();
-#endif
+            //#if FINAL_GAME_VERSION
+            //#else
+            if (GameManager.Main.DEBUG)
+            {
+                GameManager.Main.inputs.Player.DEBUGTurnLeft.performed += ctx => DEBUGTurnLeft();
+                GameManager.Main.inputs.Player.DEBUGTurnRight.performed += ctx => DEBUGTurnRight();
+            }
+            //#endif
         }
 
         private void OnDisable()
         {
-#if FINAL_GAME_VERSION
-#else
-            GameManager.Main.inputs.Player.DEBUGTurnLeft.performed -= ctx => DEBUGTurnLeft();
-            GameManager.Main.inputs.Player.DEBUGTurnRight.performed -= ctx => DEBUGTurnRight();
-#endif
+            //#if FINAL_GAME_VERSION
+            //#else
+            if (GameManager.Main.DEBUG)
+            {
+                GameManager.Main.inputs.Player.DEBUGTurnLeft.performed -= ctx => DEBUGTurnLeft();
+                GameManager.Main.inputs.Player.DEBUGTurnRight.performed -= ctx => DEBUGTurnRight();
+            }
+            //#endif
             GameManager.Main.inputs.Player.LookAtPhone.performed -= ctx => LookAtPhone();
             GameManager.Main.inputs.Player.Boost.performed -= ctx => SpeedBoost();
             GameManager.Main.inputs.Player.Punch.performed -= ctx => Punch();
@@ -85,7 +91,7 @@ namespace DanthoLogic
 
         private void FixedUpdate()
         {
-            rigidbody.linearVelocity = t.forward * currentSpeed + (Vector3.down * 10);
+            rigidbody.linearVelocity = t.forward * currentSpeed + (Vector3.down);
             if (GameManager.Main.inputs.Player.Strafe.IsPressed())
             {
                 rigidbody.linearVelocity += t.right * GameManager.Main.inputs.Player.Strafe.ReadValue<float>() * currentStrafeSpeed;
