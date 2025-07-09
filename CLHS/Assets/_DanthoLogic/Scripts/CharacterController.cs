@@ -45,26 +45,20 @@ namespace DanthoLogic
             GameManager.Main.inputs.Player.Boost.performed += ctx => SpeedBoost();
             GameManager.Main.inputs.Player.Punch.performed += ctx => Punch();
             GameManager.Main.inputs.Player.Slomo.performed += ctx => Slomo();
-            //#if FINAL_GAME_VERSION
-            //#else
-            if (GameManager.Main.DEBUG)
-            {
-                GameManager.Main.inputs.Player.DEBUGTurnLeft.performed += ctx => DEBUGTurnLeft();
-                GameManager.Main.inputs.Player.DEBUGTurnRight.performed += ctx => DEBUGTurnRight();
-            }
-            //#endif
+#if FINAL_GAME_VERSION
+#else
+            GameManager.Main.inputs.Player.DEBUGTurnLeft.performed += ctx => DEBUGTurnLeft();
+            GameManager.Main.inputs.Player.DEBUGTurnRight.performed += ctx => DEBUGTurnRight();
+#endif
         }
 
         private void OnDisable()
         {
-            //#if FINAL_GAME_VERSION
-            //#else
-            if (GameManager.Main.DEBUG)
-            {
-                GameManager.Main.inputs.Player.DEBUGTurnLeft.performed -= ctx => DEBUGTurnLeft();
-                GameManager.Main.inputs.Player.DEBUGTurnRight.performed -= ctx => DEBUGTurnRight();
-            }
-            //#endif
+#if FINAL_GAME_VERSION
+#else
+            GameManager.Main.inputs.Player.DEBUGTurnLeft.performed -= ctx => DEBUGTurnLeft();
+            GameManager.Main.inputs.Player.DEBUGTurnRight.performed -= ctx => DEBUGTurnRight();
+#endif
             GameManager.Main.inputs.Player.LookAtPhone.performed -= ctx => LookAtPhone();
             GameManager.Main.inputs.Player.Boost.performed -= ctx => SpeedBoost();
             GameManager.Main.inputs.Player.Punch.performed -= ctx => Punch();
@@ -227,16 +221,12 @@ namespace DanthoLogic
 
         void DEBUGTurnLeft()
         {
-            t.DORotate(t.eulerAngles + new Vector3(0, -90, 0), GameManager.Main.settings.PlayerStng.rotationDuration);
-            //t.eulerAngles = t.eulerAngles + new Vector3(0, -90, 0);
-            Debug.Log("pressL");
+            t.DORotate(t.eulerAngles + new Vector3(0, -90, 0), GameManager.Main.settings.PlayerStng.rotationDuration).SetUpdate(UpdateType.Fixed);
 
         }
         void DEBUGTurnRight()
         {
-            t.DORotate(t.eulerAngles + new Vector3(0, 90, 0), GameManager.Main.settings.PlayerStng.rotationDuration);
-            //t.eulerAngles = t.eulerAngles + new Vector3(0, 90, 0);
-            Debug.Log("pressR");
+            t.DORotate(t.eulerAngles + new Vector3(0, 90, 0), GameManager.Main.settings.PlayerStng.rotationDuration).SetUpdate(UpdateType.Fixed);
         }
 
 #if UNITY_EDITOR

@@ -8,7 +8,7 @@ namespace DanthoLogic
         private static GameManager _main;
         public static GameManager Main => _main;
 
-        public bool DEBUG;
+        [HideInInspector] public bool DEBUG;
 
         private void Awake()
         {
@@ -19,11 +19,11 @@ namespace DanthoLogic
 
             inputs = new InputSystem_Actions();
 
-            //#if FINAL_GAME_VERSION
-            //            DEBUG = false;
-            //#else
-            //            DEBUG = true;
-            //#endif
+#if FINAL_GAME_VERSION
+                        DEBUG = false;
+#else
+            DEBUG = true;
+#endif
         }
 
         public GameSettings settings;
