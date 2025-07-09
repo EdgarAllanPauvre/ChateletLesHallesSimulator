@@ -8,13 +8,24 @@ namespace DanthoLogic
         private static GameManager _main;
         public static GameManager Main => _main;
 
+        [HideInInspector] public bool DEBUG;
+
         private void Awake()
         {
             if (_main != null) Destroy(this.gameObject);
             _main = this;
+
+            inputs = new InputSystem_Actions();
+
+#if FINAL_GAME_VERSION
+            DEBUG = false;
+#else
+            DEBUG = true;
+#endif
         }
 
         public GameSettings settings;
+        public InputSystem_Actions inputs;
 
         private void Update()
         {

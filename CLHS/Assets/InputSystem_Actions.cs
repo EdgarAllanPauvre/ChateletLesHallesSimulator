@@ -144,6 +144,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DEBUGTurnLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""118b130f-00d1-41bd-82e2-7709f30f0d30"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""DEBUGTurnRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""3a80bf00-0cce-4c9c-8cfc-e4b333299308"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -342,6 +360,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""Punch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fbf45384-0068-4ee5-983c-e60283819fb1"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""DEBUGTurnLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""352a41d1-00eb-4484-a294-b3f277a986a8"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""DEBUGTurnRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -935,6 +975,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Slomo = m_Player.FindAction("Slomo", throwIfNotFound: true);
         m_Player_LookAtPhone = m_Player.FindAction("LookAtPhone", throwIfNotFound: true);
         m_Player_Punch = m_Player.FindAction("Punch", throwIfNotFound: true);
+        m_Player_DEBUGTurnLeft = m_Player.FindAction("DEBUGTurnLeft", throwIfNotFound: true);
+        m_Player_DEBUGTurnRight = m_Player.FindAction("DEBUGTurnRight", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1034,6 +1076,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Slomo;
     private readonly InputAction m_Player_LookAtPhone;
     private readonly InputAction m_Player_Punch;
+    private readonly InputAction m_Player_DEBUGTurnLeft;
+    private readonly InputAction m_Player_DEBUGTurnRight;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1069,6 +1113,14 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Punch".
         /// </summary>
         public InputAction @Punch => m_Wrapper.m_Player_Punch;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/DEBUGTurnLeft".
+        /// </summary>
+        public InputAction @DEBUGTurnLeft => m_Wrapper.m_Player_DEBUGTurnLeft;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/DEBUGTurnRight".
+        /// </summary>
+        public InputAction @DEBUGTurnRight => m_Wrapper.m_Player_DEBUGTurnRight;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1113,6 +1165,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Punch.started += instance.OnPunch;
             @Punch.performed += instance.OnPunch;
             @Punch.canceled += instance.OnPunch;
+            @DEBUGTurnLeft.started += instance.OnDEBUGTurnLeft;
+            @DEBUGTurnLeft.performed += instance.OnDEBUGTurnLeft;
+            @DEBUGTurnLeft.canceled += instance.OnDEBUGTurnLeft;
+            @DEBUGTurnRight.started += instance.OnDEBUGTurnRight;
+            @DEBUGTurnRight.performed += instance.OnDEBUGTurnRight;
+            @DEBUGTurnRight.canceled += instance.OnDEBUGTurnRight;
         }
 
         /// <summary>
@@ -1142,6 +1200,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Punch.started -= instance.OnPunch;
             @Punch.performed -= instance.OnPunch;
             @Punch.canceled -= instance.OnPunch;
+            @DEBUGTurnLeft.started -= instance.OnDEBUGTurnLeft;
+            @DEBUGTurnLeft.performed -= instance.OnDEBUGTurnLeft;
+            @DEBUGTurnLeft.canceled -= instance.OnDEBUGTurnLeft;
+            @DEBUGTurnRight.started -= instance.OnDEBUGTurnRight;
+            @DEBUGTurnRight.performed -= instance.OnDEBUGTurnRight;
+            @DEBUGTurnRight.canceled -= instance.OnDEBUGTurnRight;
         }
 
         /// <summary>
@@ -1484,6 +1548,20 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPunch(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "DEBUGTurnLeft" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDEBUGTurnLeft(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "DEBUGTurnRight" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDEBUGTurnRight(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

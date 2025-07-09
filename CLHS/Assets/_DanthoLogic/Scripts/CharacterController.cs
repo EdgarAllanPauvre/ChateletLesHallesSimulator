@@ -1,9 +1,9 @@
 using DanthoLogic.UI;
 using DG.Tweening;
 using System;
+
 //using UnityEditor;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace DanthoLogic
 {
@@ -15,24 +15,18 @@ namespace DanthoLogic
         [SerializeField] InputSystem_Actions inputActions;
         [SerializeField] GameObject phone;
         [SerializeField] Animator animator;
-
-        [Header("Input")]
-        [SerializeField] InputActionReference strafeInput;
-        [SerializeField] InputActionReference speedBoostInput;
-        [SerializeField] InputActionReference slomoInput;
-        [SerializeField] InputActionReference lookAtPhoneInput;
-        [SerializeField] InputActionReference punchInput;
+        [SerializeField] new Rigidbody rigidbody;
 
         GameSettings.PlayerSettings settings;
 
-        bool slomoOn;
+        bool slomoON;
+        bool speedBoostON;
 
         bool phoneOut;
         float currentSpeed;
         float currentStrafeSpeed;
         Transform t;
         SpeedParam currentSpeedParam;
-        //ESpeedState currentSpeedState;
         SpeedParam speedBeforeSlomo;
         bool collisionDuringBoost;
 
@@ -46,33 +40,36 @@ namespace DanthoLogic
 
         private void OnEnable()
         {
-            lookAtPhoneInput.action.performed += ctx => LookAtPhone();
-            speedBoostInput.action.performed += ctx => SpeedBoost();
-            punchInput.action.performed += ctx => Punch();
-            slomoInput.action.performed += ctx => Slomo();
+            GameManager.Main.inputs.Player.Enable();
+            GameManager.Main.inputs.Player.LookAtPhone.performed += ctx => LookAtPhone();
+            GameManager.Main.inputs.Player.Boost.performed += ctx => SpeedBoost();
+            GameManager.Main.inputs.Player.Punch.performed += ctx => Punch();
+            GameManager.Main.inputs.Player.Slomo.performed += ctx => Slomo();
+#if FINAL_GAME_VERSION
+#else
+            GameManager.Main.inputs.Player.DEBUGTurnLeft.performed += ctx => DEBUGTurnLeft();
+            GameManager.Main.inputs.Player.DEBUGTurnRight.performed += ctx => DEBUGTurnRight();
+#endif
         }
 
         private void OnDisable()
         {
-            lookAtPhoneInput.action.performed -= ctx => LookAtPhone();
-            speedBoostInput.action.performed -= ctx => SpeedBoost();
-            punchInput.action.performed -= ctx => Punch();
-            slomoInput.action.performed -= ctx => Slomo();
-        }
-
-        private void OnDestroy()
-        {
-            lookAtPhoneInput.action.performed -= ctx => LookAtPhone();
-            speedBoostInput.action.performed -= ctx => SpeedBoost();
-            punchInput.action.performed -= ctx => Punch();
-            slomoInput.action.performed -= ctx => Slomo();
+#if FINAL_GAME_VERSION
+#else
+            GameManager.Main.inputs.Player.DEBUGTurnLeft.performed -= ctx => DEBUGTurnLeft();
+            GameManager.Main.inputs.Player.DEBUGTurnRight.performed -= ctx => DEBUGTurnRight();
+#endif
+            GameManager.Main.inputs.Player.LookAtPhone.performed -= ctx => LookAtPhone();
+            GameManager.Main.inputs.Player.Boost.performed -= ctx => SpeedBoost();
+            GameManager.Main.inputs.Player.Punch.performed -= ctx => Punch();
+            GameManager.Main.inputs.Player.Slomo.performed -= ctx => Slomo();
+            GameManager.Main.inputs.Player.Disable();
         }
 
         void Init()
         {
             settings = GameManager.Main.settings.PlayerStng;
             currentSpeedParam = settings.speed1;
-            //currentSpeedState = ESpeedState.speed1;
             currentSpeed = settings.speed1.speed;
             currentStrafeSpeed = settings.strafeSpeed;
             t = this.transform;
@@ -83,13 +80,17 @@ namespace DanthoLogic
 
         private void Update()
         {
-            t.transform.position += t.forward * currentSpeed * Time.deltaTime;
-            if (strafeInput.action.IsPressed())
-            {
-                t.transform.position += t.right * strafeInput.action.ReadValue<float>() * currentStrafeSpeed * Time.deltaTime;
-            }
-
             GameUI.Main.UpdateUI(currentSpeedParam.speedState.ToString(), currentSpeed);
+        }
+
+        private void FixedUpdate()
+        {
+            rigidbody.linearVelocity = t.forward * currentSpeed;
+            if (GameManager.Main.inputs.Player.Strafe.IsPressed())
+            {
+                rigidbody.linearVelocity += t.right * GameManager.Main.inputs.Player.Strafe.ReadValue<float>() * currentStrafeSpeed;
+            }
+            rigidbody.AddForce(Vector3.down * 100);
         }
 
         Tween speedTween;
@@ -100,6 +101,26 @@ namespace DanthoLogic
             float targetValue = newSpeed.speed;
             float duration = newSpeed.transitionDuration;
 
+            //OLD SPEED
+            switch (currentSpeedParam.speedState)
+            {
+                case ESpeedState.slomo:
+                    duration = settings.slowmoSpeed.transitionDuration;
+                    break;
+                case ESpeedState.speed0:
+                    break;
+                case ESpeedState.speed1:
+                    break;
+                case ESpeedState.speedMax:
+                    break;
+                case ESpeedState.speedBoost:
+                    break;
+                default:
+                    break;
+            }
+
+
+            //NEW SPEED
             switch (newSpeed.speedState)
             {
                 case ESpeedState.slomo:
@@ -130,8 +151,6 @@ namespace DanthoLogic
                 .OnComplete(() =>
                 {
                     currentSpeedParam = newSpeed;
-                    Debug.Log(currentSpeedParam.speedState.ToString());
-                    //currentSpeedState = newSpeed.speedState;
                     if (currentSpeedParam.speedState == ESpeedState.speed0) UpdateSpeed(settings.speed1);
                     if (currentSpeedParam.speedState == ESpeedState.speed1) UpdateSpeed(settings.speedMax);
                 });
@@ -145,6 +164,8 @@ namespace DanthoLogic
 
         void Punch()
         {
+            if (slomoON) return;
+
             animator.SetTrigger("punch");
             UpdateSpeed(settings.speed1);
             RaycastHit[] hits = Physics.RaycastAll(t.position, t.forward, settings.hitRange);
@@ -160,25 +181,32 @@ namespace DanthoLogic
 
         void SpeedBoost()
         {
-            if (currentSpeedParam.speedState == ESpeedState.speedMax)
+            speedBoostON = !speedBoostON;
+
+            if (speedBoostON && currentSpeedParam.speedState == ESpeedState.speedMax)
                 UpdateSpeed(settings.speedBoost);
+            else if (!speedBoostON && (currentSpeedParam.speedState == ESpeedState.speedMax || currentSpeedParam.speedState == ESpeedState.speedBoost))
+                UpdateSpeed(settings.speedMax);
         }
 
         void Slomo()
         {
-            //if(ctx.performed)
-            Debug.Log("slomo performed");
-            slomoOn = !slomoOn;
+            slomoON = !slomoON;
 
-            if (slomoOn)
+            //Wait for last speed to be recovered before being able to go back to slomo
+            if (slomoON && currentSpeedParam.speedState == ESpeedState.slomo)
+            {
+                slomoON = false;
+                return;
+            }
+
+            if (slomoON)
             {
                 speedBeforeSlomo = currentSpeedParam;
-                Debug.Log("old speed " + speedBeforeSlomo.speedState.ToString());
                 UpdateSpeed(settings.slowmoSpeed);
             }
             else
             {
-                Debug.Log("going into " + speedBeforeSlomo.speedState.ToString());
                 UpdateSpeed(speedBeforeSlomo);
             }
         }
@@ -190,17 +218,24 @@ namespace DanthoLogic
                 if (currentSpeedParam.speedState == ESpeedState.speedBoost) collisionDuringBoost = true;
                 UpdateSpeed(settings.speed0);
             }
-
-            //if (other.TryGetComponent<CharacterTurner>(out CharacterTurner ct))
-            //{
-            //    t.DORotate(ct.newForward.eulerAngles, rotationDuration).OnComplete(() => { Debug.Log(t.forward); });
-            //}
         }
 
+        void DEBUGTurnLeft()
+        {
+            t.DORotate(t.eulerAngles + new Vector3(0, -90, 0), GameManager.Main.settings.PlayerStng.rotationDuration);
+
+        }
+        void DEBUGTurnRight()
+        {
+            t.DORotate(t.eulerAngles + new Vector3(0, +90, 0), GameManager.Main.settings.PlayerStng.rotationDuration);
+        }
+
+#if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             Debug.DrawRay(transform.position, transform.forward, Color.red);
         }
+#endif
 
         public enum ESpeedState
         {

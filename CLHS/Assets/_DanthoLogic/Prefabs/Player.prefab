@@ -804,7 +804,7 @@ Transform:
   m_GameObject: {fileID: 1747769751837514315}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: -0.97, z: 0}
+  m_LocalPosition: {x: 0, y: 0.003000021, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3343,7 +3343,7 @@ Transform:
   m_GameObject: {fileID: 6247442430031961276}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 1.473, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4704,7 +4704,7 @@ CapsuleCollider:
   m_Radius: 0.2
   m_Height: 1.7171133
   m_Direction: 1
-  m_Center: {x: 0, y: -0.12342751, z: 0}
+  m_Center: {x: 0, y: 0.86, z: 0}
 --- !u!114 &208045088787120100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4720,11 +4720,7 @@ MonoBehaviour:
   cam: {fileID: 0}
   phone: {fileID: 5936537874677489151}
   animator: {fileID: 8978661280922067399}
-  strafeInput: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  speedBoostInput: {fileID: 5468034602559558939, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  slomoInput: {fileID: 8637084800567044509, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  lookAtPhoneInput: {fileID: 962748185338776617, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  punchInput: {fileID: 954992494379438886, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  rigidbody: {fileID: 0}
 --- !u!1 &7676978994204807469
 GameObject:
   m_ObjectHideFlags: 0

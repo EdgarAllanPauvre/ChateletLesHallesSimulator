@@ -27,7 +27,7 @@ namespace DanthoLogic
         {
             if (other.TryGetComponent<CharacterController>(out CharacterController cc))
             {
-                cc.transform.DORotate(new Vector3(0, -newForward, 0), GameManager.Main.settings.PlayerStng.rotationDuration).OnComplete(() => { Debug.Log(cc.transform.forward); });
+                cc.transform.DORotate(new Vector3(0, -newForward, 0), GameManager.Main.settings.PlayerStng.rotationDuration);
             }
         }
     }
