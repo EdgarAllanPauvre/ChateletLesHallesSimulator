@@ -222,12 +222,14 @@ namespace DanthoLogic
 
         void DEBUGTurnLeft()
         {
-            t.DORotate(t.eulerAngles + new Vector3(0, -90, 0), GameManager.Main.settings.PlayerStng.rotationDuration);
+            //t.DORotate(t.eulerAngles + new Vector3(0, -90, 0), GameManager.Main.settings.PlayerStng.rotationDuration);
+            t.eulerAngles = t.eulerAngles + new Vector3(0, -90, 0);
 
         }
         void DEBUGTurnRight()
         {
-            t.DORotate(t.eulerAngles + new Vector3(0, +90, 0), GameManager.Main.settings.PlayerStng.rotationDuration);
+            //t.DORotate(t.eulerAngles + new Vector3(0, 90, 0), GameManager.Main.settings.PlayerStng.rotationDuration);
+            t.eulerAngles = t.eulerAngles + new Vector3(0, 90, 0);
         }
 
 #if UNITY_EDITOR

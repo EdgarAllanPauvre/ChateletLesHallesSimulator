@@ -30,7 +30,12 @@ namespace DanthoLogic
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.R))
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            {
+                SceneManager.LoadScene(0, LoadSceneMode.Single);
+                SceneManager.LoadScene(1, LoadSceneMode.Additive);
+                SceneManager.LoadScene(2, LoadSceneMode.Additive);
+                SceneManager.LoadScene(3, LoadSceneMode.Additive);
+            }
         }
     }
 }
