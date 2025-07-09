@@ -85,12 +85,11 @@ namespace DanthoLogic
 
         private void FixedUpdate()
         {
-            rigidbody.linearVelocity = t.forward * currentSpeed;
+            rigidbody.linearVelocity = t.forward * currentSpeed + (Vector3.down * 10);
             if (GameManager.Main.inputs.Player.Strafe.IsPressed())
             {
                 rigidbody.linearVelocity += t.right * GameManager.Main.inputs.Player.Strafe.ReadValue<float>() * currentStrafeSpeed;
             }
-            rigidbody.AddForce(Vector3.down * 100);
         }
 
         Tween speedTween;
@@ -222,14 +221,16 @@ namespace DanthoLogic
 
         void DEBUGTurnLeft()
         {
-            //t.DORotate(t.eulerAngles + new Vector3(0, -90, 0), GameManager.Main.settings.PlayerStng.rotationDuration);
-            t.eulerAngles = t.eulerAngles + new Vector3(0, -90, 0);
+            t.DORotate(t.eulerAngles + new Vector3(0, -90, 0), GameManager.Main.settings.PlayerStng.rotationDuration);
+            //t.eulerAngles = t.eulerAngles + new Vector3(0, -90, 0);
+            Debug.Log("pressL");
 
         }
         void DEBUGTurnRight()
         {
-            //t.DORotate(t.eulerAngles + new Vector3(0, 90, 0), GameManager.Main.settings.PlayerStng.rotationDuration);
-            t.eulerAngles = t.eulerAngles + new Vector3(0, 90, 0);
+            t.DORotate(t.eulerAngles + new Vector3(0, 90, 0), GameManager.Main.settings.PlayerStng.rotationDuration);
+            //t.eulerAngles = t.eulerAngles + new Vector3(0, 90, 0);
+            Debug.Log("pressR");
         }
 
 #if UNITY_EDITOR
