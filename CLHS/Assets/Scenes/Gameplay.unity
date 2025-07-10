@@ -4525,7 +4525,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc393ea028b080e409cb1fe314d5d995, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DEBUG: 0
+  DEBUG: 1
   settings: {fileID: 11400000, guid: 2427a16609f85d646acf9d0dde2042f3, type: 2}
 --- !u!4 &1694270881
 Transform:
