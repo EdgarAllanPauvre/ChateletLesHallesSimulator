@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Builder : MonoBehaviour
 {
-    //private const string DEFINE_DEBUG = "DEBUG";
+    private const string DEFINE_DEBUG = "DEBUG";
     private const string DEFINE_SYMBOL_NAME_FINAL_GAME = "FINAL_GAME_VERSION";
 
     //[MenuItem("File/Build Demo version")]
@@ -28,7 +28,7 @@ public class Builder : MonoBehaviour
     [MenuItem("File/Build game DEBUG")]
     static void PerformWin64BuildFinalGameDev()
     {
-        PerformWin64Build(BuildOptions.Development, DEFINE_SYMBOL_NAME_FINAL_GAME, "ChateletLesHallesSimulatorDEBUG");
+        PerformWin64Build(BuildOptions.Development, DEFINE_DEBUG, "ChateletLesHallesSimulatorDEBUG");
     }
 
     static void PerformWin64Build(BuildOptions options, string symbolName, string folder)
