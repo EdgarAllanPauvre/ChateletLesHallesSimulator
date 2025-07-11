@@ -63,14 +63,14 @@ Material:
     m_Ints: []
     m_Floats:
     - _AOContrast: 1
-    - _AO_Slider: 1
+    - _AO_Slider: 0
     - _AlbedoForce: 0.12
     - _AlbedoHueForce: 1
-    - _Metallic: 0.793
+    - _Metallic: 0.318
     - _NormalForce: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Smoothness: 0.826
+    - _Smoothness: 1
     m_Colors:
     - _Albedo_Hue: {r: 1, g: 0.35030997, b: 0, a: 1}
     - _UV_Offset: {r: 0, g: -0.0315, b: 0, a: 0}

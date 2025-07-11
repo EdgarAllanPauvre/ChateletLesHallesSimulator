@@ -19,11 +19,11 @@ MonoBehaviour:
       transitionDuration: 0.04
     speed1:
       speedState: 2
-      speed: 0
+      speed: 4
       transitionDuration: 2
     speedMax:
       speedState: 3
-      speed: 0
+      speed: 6
       transitionDuration: 5
     slowmoSpeed:
       speedState: 0
