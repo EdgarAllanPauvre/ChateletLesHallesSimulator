@@ -1,6 +1,8 @@
 using DanthoLogic.UI;
 using DG.Tweening;
 using System;
+using System.Threading.Tasks;
+
 
 //using UnityEditor;
 using UnityEngine;
@@ -38,8 +40,11 @@ namespace DanthoLogic
             UpdateSpeed(settings.speedMax);
         }
 
-        private void OnEnable()
+        private async void OnEnable()
         {
+            while (GameManager.Main == null)
+                await Task.Yield();
+
             GameManager.Main.inputs.Player.Enable();
             GameManager.Main.inputs.Player.LookAtPhone.performed += ctx => LookAtPhone();
             GameManager.Main.inputs.Player.Boost.performed += ctx => SpeedBoost();
