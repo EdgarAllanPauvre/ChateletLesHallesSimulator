@@ -10,6 +10,7 @@ namespace DanthoLogic.UI
 
         [SerializeField] TextMeshProUGUI DEBUG_State;
         [SerializeField] TextMeshProUGUI DEBUG_Speed;
+        [SerializeField] TextMeshProUGUI DEBUG_FPS;
 
         private void Awake()
         {
@@ -20,6 +21,7 @@ namespace DanthoLogic.UI
         {
             DEBUG_State.text = state;
             DEBUG_Speed.text = speed.ToString();
+            DEBUG_FPS.text = ((int)(1f / Time.unscaledDeltaTime)).ToString();
         }
     }
 }
