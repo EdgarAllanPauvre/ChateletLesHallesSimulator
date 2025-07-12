@@ -17,6 +17,8 @@ namespace SlimUI.ModernMenu{
         [Tooltip("The Menu for when the PLAY button is clicked")]
         public GameObject playMenu;
         [Tooltip("The Menu for when the EXIT button is clicked")]
+        public GameObject settingsMenu;
+        [Tooltip("The Menu for when the SETTINGS button is clicked")]
         public GameObject exitMenu;
         [Tooltip("Optional 4th Menu")]
         public GameObject extrasMenu;
@@ -122,8 +124,23 @@ namespace SlimUI.ModernMenu{
 			if(extrasMenu) extrasMenu.SetActive(false);
 			playMenu.SetActive(true);
 		}
-		
-		public void PlayCampaignMobile(){
+
+        public void OptionMenu()
+        {
+            firstMenu.SetActive(false);
+            if (firstMenu) extrasMenu.SetActive(false);
+            settingsMenu.SetActive(true);
+        }
+
+        public void OptionMenuExit()
+        {
+            settingsMenu.SetActive(false);
+            if (settingsMenu) extrasMenu.SetActive(false);
+            settingsMenu.SetActive(false);
+			firstMenu.SetActive(true);
+        }
+
+        public void PlayCampaignMobile(){
 			exitMenu.SetActive(false);
 			if(extrasMenu) extrasMenu.SetActive(false);
 			playMenu.SetActive(true);
